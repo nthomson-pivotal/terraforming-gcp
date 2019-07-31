@@ -46,8 +46,6 @@ resource "tls_locally_signed_cert" "ssl_cert" {
 }
 
 resource "google_compute_ssl_certificate" "certificate" {
-  count = "${local.should_create_certificate}"
-
   name_prefix = "${var.env_name}-${var.resource_name}"
   description = "user provided ssl private key / ssl certificate pair"
   certificate = "${length(var.ssl_ca_cert) > 0 ? element(concat(tls_locally_signed_cert.ssl_cert.*.cert_pem, list("")), 0) : var.ssl_cert}"
